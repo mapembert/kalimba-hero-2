@@ -97,6 +97,15 @@ export default class MainScene extends Phaser.Scene {
   startCountdown() {
     console.log('startCountdown() - gameWidth:', this.gameWidth, 'gameHeight:', this.gameHeight, 'scrollSpeed:', this.scrollSpeed);
     this.isGameRunning = false;
+    
+    // Unlock audio for iOS - must be done on user interaction
+    if (this.sound.context) {
+      const ctx = this.sound.context as AudioContext;
+      if (ctx.state === 'suspended') {
+        ctx.resume().then(() => console.log('Audio context resumed for iOS')).catch(e => console.warn('Failed to resume audio', e));
+      }
+    }
+    
     const centerX = this.gameWidth / 2;
     const centerY = this.gameHeight / 2;
     console.log('Countdown text position:', centerX, centerY);
@@ -377,6 +386,12 @@ export default class MainScene extends Phaser.Scene {
       if (!this.sound.context) return;
       
       const ctx = this.sound.context as AudioContext;
+      
+      // Resume audio context for iOS (must be done on user interaction)
+      if (ctx.state === 'suspended') {
+        ctx.resume().catch(e => console.warn('Failed to resume audio context', e));
+      }
+      
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       
