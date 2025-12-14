@@ -62,6 +62,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
+    console.log('MainScene.create() called', this.scale.width, this.scale.height);
     // Skip texture creation - we'll use graphics objects instead
     this.updateLayoutVars(this.scale.width, this.scale.height);
 
@@ -70,6 +71,7 @@ export default class MainScene extends Phaser.Scene {
 
     // Initial Layout Construction
     this.createLayout();
+    console.log('Layout created, starting countdown');
 
     // Note Group
     this.notesGroup = this.add.group();
@@ -92,6 +94,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   startCountdown() {
+    console.log('startCountdown() called', this.gameWidth, this.gameHeight);
     this.isGameRunning = false;
     const centerX = this.gameWidth / 2;
     const centerY = this.gameHeight / 2;
