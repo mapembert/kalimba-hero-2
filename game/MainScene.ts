@@ -62,16 +62,17 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
-    console.log('MainScene.create() called', this.scale.width, this.scale.height);
+    console.log('MainScene.create() - Width:', this.scale.width, 'Height:', this.scale.height);
     // Skip texture creation - we'll use graphics objects instead
     this.updateLayoutVars(this.scale.width, this.scale.height);
 
     // Background
-    this.add.rectangle(0, 0, 3000, 3000, 0x111827).setOrigin(0);
+    const bg = this.add.rectangle(0, 0, 3000, 3000, 0x111827).setOrigin(0);
+    console.log('Background created at', bg.x, bg.y, bg.width, bg.height);
 
     // Initial Layout Construction
     this.createLayout();
-    console.log('Layout created, starting countdown');
+    console.log('Layout created, keyZones:', this.keyZones.length, 'hitLine:', this.hitLine ? 'exists' : 'missing');
 
     // Note Group
     this.notesGroup = this.add.group();
@@ -94,10 +95,11 @@ export default class MainScene extends Phaser.Scene {
   }
 
   startCountdown() {
-    console.log('startCountdown() called', this.gameWidth, this.gameHeight);
+    console.log('startCountdown() - gameWidth:', this.gameWidth, 'gameHeight:', this.gameHeight, 'scrollSpeed:', this.scrollSpeed);
     this.isGameRunning = false;
     const centerX = this.gameWidth / 2;
     const centerY = this.gameHeight / 2;
+    console.log('Countdown text position:', centerX, centerY);
 
     const countText = this.add.text(centerX, centerY, "", {
       fontSize: '120px',
