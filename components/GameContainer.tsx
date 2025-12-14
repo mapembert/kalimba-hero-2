@@ -20,7 +20,7 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
     if (!containerRef.current) return;
 
     const config: Phaser.Types.Core.GameConfig = {
-      type: Phaser.AUTO,
+      type: Phaser.CANVAS, // Force Canvas mode to avoid WebGL framebuffer issues
       parent: containerRef.current,
       width: window.innerWidth,
       height: window.innerHeight,
@@ -33,12 +33,6 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
       },
       render: {
         antialias: true,
-        powerPreference: 'high-performance',
-        failIfMajorPerformanceCaveat: false,
-        pixelArt: false,
-        transparent: false,
-        clearBeforeRender: true,
-        preserveDrawingBuffer: false,
       },
       // Pass settings to scene
       scene: [new MainScene(song, speed, settings, onSongComplete, onScoreUpdate)],
