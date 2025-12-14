@@ -62,35 +62,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
-    // Procedural Texture Generation using Canvas to avoid WebGL Framebuffer errors
-    if (!this.textures.exists('particle')) {
-        const canvas = document.createElement('canvas');
-        canvas.width = 8;
-        canvas.height = 8;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(4, 4, 4, 0, Math.PI * 2);
-            ctx.fill();
-            this.textures.addCanvas('particle', canvas);
-        }
-    }
-    
-    if (!this.textures.exists('glow')) {
-        const canvas = document.createElement('canvas');
-        canvas.width = 32;
-        canvas.height = 32;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.beginPath();
-            ctx.arc(16, 16, 16, 0, Math.PI * 2);
-            ctx.fill();
-            this.textures.addCanvas('glow', canvas);
-        }
-    }
-
+    // Skip texture creation - we'll use graphics objects instead
     this.updateLayoutVars(this.scale.width, this.scale.height);
 
     // Background
@@ -544,8 +516,8 @@ export default class MainScene extends Phaser.Scene {
   createBurst(x: number, y: number, color: number, big: boolean) {
     const count = big ? 20 : 10;
     for(let i=0; i<count; i++) {
-      const p = this.add.image(x, y, 'particle');
-      p.setTint(color);
+      // Use graphics circle instead of texture-based particle
+      const p = this.add.circle(x, y, 4, color);
       const angle = Phaser.Math.Between(0, 360);
       const speed = Phaser.Math.Between(50, big ? 200 : 100);
       
