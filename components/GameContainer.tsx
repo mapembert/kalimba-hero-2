@@ -31,6 +31,15 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
           debug: false,
         },
       },
+      render: {
+        antialias: true,
+        powerPreference: 'high-performance',
+        failIfMajorPerformanceCaveat: false,
+        pixelArt: false,
+        transparent: false,
+        clearBeforeRender: true,
+        preserveDrawingBuffer: false,
+      },
       // Pass settings to scene
       scene: [new MainScene(song, speed, settings, onSongComplete, onScoreUpdate)],
       scale: {
