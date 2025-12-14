@@ -19,5 +19,9 @@ export const amazingGrace = createSong('amazing_grace', 'Amazing Grace', 'Spirit
     // Line 3: I once was lost, but now am found
     {t: 10000, n: 'A4'}, {t: 10500, n: 'C4'}, {t: 11000, n: 'A4'}, {t: 11500, n: 'C4'},
     {t: 12000, n: 'A4'}, {t: 12500, n: 'F4'}, {t: 13500, n: 'C4'}, 
-    {t: 14250, n: 'D4'}, {t: 14750, n: 'F4'}, {t: 15000, n: 'F4'}, {t: 15250, n: 'D4'}, {t: 15500, n: 'C4'}
+    {t: 14250, n: 'D4'}, {t: 14750, n: 'F4'}, {t: 15000, n: 'F4'}, {t: 15250, n: 'D4'}, {t: 15500, n: 'C4'},
+    
+    // Line 4: Was blind but now I see
+    {t: 17000, n: 'C4'}, {t: 17750, n: 'F4'}, {t: 18500, n: 'A4'}, {t: 18750, n: 'F4'},
+    {t: 19000, n: 'A4'}, {t: 19750, n: 'G4'}, {t: 20250, n: 'F4'}
 ]);
