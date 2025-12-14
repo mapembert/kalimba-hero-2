@@ -1,0 +1,7 @@
+{
+  "name": " Kalimba Hero 2",
+  "description": "A rhythm game for 17-key Kalimba. Align your instrument, follow the notes, and play along using your microphone for hit detection.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
