@@ -63,31 +63,42 @@ export default class MainScene extends Phaser.Scene {
 
   create() {
     // Procedural Texture Generation using Canvas to avoid WebGL Framebuffer errors
+    // Create textures only if they don't exist and ensure proper dimensions
     if (!this.textures.exists('particle')) {
-        const canvas = document.createElement('canvas');
-        canvas.width = 8;
-        canvas.height = 8;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(4, 4, 4, 0, Math.PI * 2);
-            ctx.fill();
-            this.textures.addCanvas('particle', canvas);
+        try {
+            const canvas = document.createElement('canvas');
+            canvas.width = 16;  // Increased from 8 to 16 for better compatibility
+            canvas.height = 16;
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            if (ctx) {
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(8, 8, 8, 0, Math.PI * 2);
+                ctx.fill();
+                this.textures.addCanvas('particle', canvas);
+            }
+        } catch (e) {
+            console.warn('Failed to create particle texture:', e);
         }
     }
     
     if (!this.textures.exists('glow')) {
-        const canvas = document.createElement('canvas');
-        canvas.width = 32;
-        canvas.height = 32;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.beginPath();
-            ctx.arc(16, 16, 16, 0, Math.PI * 2);
-            ctx.fill();
-            this.textures.addCanvas('glow', canvas);
+        try {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;  // Increased from 32 to 64 for better compatibility
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            if (ctx) {
+                const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+                gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+                gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.4)');
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, 64, 64);
+                this.textures.addCanvas('glow', canvas);
+            }
+        } catch (e) {
+            console.warn('Failed to create glow texture:', e);
         }
     }
 
