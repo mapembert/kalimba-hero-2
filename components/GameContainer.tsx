@@ -19,45 +19,50 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const config: Phaser.Types.Core.GameConfig = {
-      type: Phaser.WEBGL, // Try WebGL explicitly with better config
-      parent: containerRef.current,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      backgroundColor: '#111827',
-      render: {
-        antialias: false,
-        antialiasGL: false,
-        mipmapFilter: 'LINEAR',
-        roundPixels: true,
-        pixelArt: false,
-        transparent: false,
-        clearBeforeRender: true,
-        preserveDrawingBuffer: false,
-        premultipliedAlpha: true,
-        failIfMajorPerformanceCaveat: false,
-        powerPreference: 'default',
-        batchSize: 4096,
-        maxTextures: -1, // Let Phaser detect automatically
-      },
-      physics: {
-        default: 'arcade',
-        arcade: {
-          debug: false,
-        },
-      },
-      // Pass settings to scene
-      scene: [new MainScene(song, speed, settings, onSongComplete, onScoreUpdate)],
-      scale: {
-        mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH
-      },
-      disableContextMenu: true,
-    };
+    // Small delay to ensure container has dimensions
+    const initGame = setTimeout(() => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
 
-    gameRef.current = new Phaser.Game(config);
+      const config: Phaser.Types.Core.GameConfig = {
+        type: Phaser.CANVAS, // Use Canvas to avoid WebGL framebuffer issues
+        parent: containerRef.current,
+        width: rect.width || window.innerWidth,
+        height: rect.height || window.innerHeight,
+        backgroundColor: '#111827',
+        render: {
+          transparent: false,
+        },
+        fps: {
+          target: 60,
+          forceSetTimeOut: false
+        },
+        physics: {
+          default: 'arcade',
+          arcade: {
+            debug: false,
+          },
+        },
+        // Pass settings to scene
+        scene: [new MainScene(song, speed, settings, onSongComplete, onScoreUpdate)],
+        scale: {
+          mode: Phaser.Scale.RESIZE,
+          autoCenter: Phaser.Scale.CENTER_BOTH,
+        },
+        disableContextMenu: true,
+        banner: false,
+        audio: {
+          disableWebAudio: false,
+          noAudio: false,
+        }
+      };
+
+      gameRef.current = new Phaser.Game(config);
+    }, 100);
 
     return () => {
+      clearTimeout(initGame);
       if (gameRef.current) {
         gameRef.current.destroy(true);
       }

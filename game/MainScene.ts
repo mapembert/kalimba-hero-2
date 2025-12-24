@@ -105,7 +105,7 @@ export default class MainScene extends Phaser.Scene {
     this.updateLayoutVars(this.scale.width, this.scale.height);
 
     // Background
-    this.add.rectangle(0, 0, 3000, 3000, 0x111827).setOrigin(0);
+    const bg = this.add.rectangle(0, 0, 3000, 3000, 0x111827).setOrigin(0);
 
     // Initial Layout Construction
     this.createLayout();
@@ -549,7 +549,8 @@ export default class MainScene extends Phaser.Scene {
   handleMiss() {
     this.currentCombo = 0;
     this.scoreUpdateCallback(this.currentScore, 0, HitRating.MISS);
-    this.cameras.main.shake(100, 0.005);
+    // Disable camera shake to avoid WebGL framebuffer issues
+    // this.cameras.main.shake(100, 0.005);
   }
 
   createBurst(x: number, y: number, color: number, big: boolean) {
