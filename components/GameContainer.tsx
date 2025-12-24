@@ -20,11 +20,26 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
     if (!containerRef.current) return;
 
     const config: Phaser.Types.Core.GameConfig = {
-      type: Phaser.CANVAS, // Force Canvas rendering to avoid WebGL framebuffer issues
+      type: Phaser.WEBGL, // Try WebGL explicitly with better config
       parent: containerRef.current,
       width: window.innerWidth,
       height: window.innerHeight,
       backgroundColor: '#111827',
+      render: {
+        antialias: false,
+        antialiasGL: false,
+        mipmapFilter: 'LINEAR',
+        roundPixels: true,
+        pixelArt: false,
+        transparent: false,
+        clearBeforeRender: true,
+        preserveDrawingBuffer: false,
+        premultipliedAlpha: true,
+        failIfMajorPerformanceCaveat: false,
+        powerPreference: 'default',
+        batchSize: 4096,
+        maxTextures: -1, // Let Phaser detect automatically
+      },
       physics: {
         default: 'arcade',
         arcade: {
@@ -36,7 +51,8 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
       scale: {
         mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH
-      }
+      },
+      disableContextMenu: true,
     };
 
     gameRef.current = new Phaser.Game(config);
@@ -52,6 +68,7 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
     <div 
       ref={containerRef} 
       className="absolute inset-0 z-0"
+      style={{ width: '100%', height: '100%', overflow: 'hidden' }}
     />
   );
 };
