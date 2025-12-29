@@ -8,9 +8,11 @@ interface UIOverlayProps {
   combo: number;
   lastRating: HitRating | null;
   onExit: () => void;
+  gameWidthPercent: number;
+  onWidthChange: (percent: number) => void;
 }
 
-const UIOverlay: React.FC<UIOverlayProps> = ({ score, combo, lastRating, onExit }) => {
+const UIOverlay: React.FC<UIOverlayProps> = ({ score, combo, lastRating, onExit, gameWidthPercent, onWidthChange }) => {
   const [ratingAnim, setRatingAnim] = useState(false);
   const [debugHz, setDebugHz] = useState(0);
   const [debugVol, setDebugVol] = useState(0);
@@ -60,13 +62,33 @@ const UIOverlay: React.FC<UIOverlayProps> = ({ score, combo, lastRating, onExit 
 
   return (
     <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-6 z-10">
-      {/* Top Bar: Score (Left) and Monitor (Right) */}
+      {/* Top Bar: Score (Left), Width Controls (Center), Monitor + Exit (Right) */}
       <div className="flex justify-between items-start w-full">
         <div className="flex flex-col">
           <span className="text-gray-400 text-sm font-bold tracking-wider">SCORE</span>
           <span className="text-4xl font-black text-white tracking-tighter tabular-nums drop-shadow-md">
             {score.toLocaleString()}
           </span>
+        </div>
+
+        {/* Width Adjustment Controls - Center Top */}
+        <div className="pointer-events-auto flex items-center gap-2 bg-black/40 backdrop-blur px-3 py-2 rounded-lg border border-white/10">
+          <span className="text-xs text-gray-400 font-bold">WIDTH</span>
+          <button
+            onClick={() => onWidthChange(Math.max(60, gameWidthPercent - 5))}
+            disabled={gameWidthPercent <= 60}
+            className="w-8 h-8 bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-white font-bold rounded transition flex items-center justify-center"
+          >
+            −
+          </button>
+          <span className="text-white font-mono font-bold text-sm w-12 text-center">{gameWidthPercent}%</span>
+          <button
+            onClick={() => onWidthChange(Math.min(100, gameWidthPercent + 5))}
+            disabled={gameWidthPercent >= 100}
+            className="w-8 h-8 bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-white font-bold rounded transition flex items-center justify-center"
+          >
+            +
+          </button>
         </div>
 
         <div className="flex flex-col items-end gap-2">
@@ -115,13 +137,6 @@ const UIOverlay: React.FC<UIOverlayProps> = ({ score, combo, lastRating, onExit 
             {combo} COMBO!
           </div>
         )}
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="w-full flex justify-between items-end">
-        <div className="text-white/30 text-xs text-left">
-          Notes fall from Top to Bottom<br/>Rotate device for a wider view
-        </div>
       </div>
     </div>
   );

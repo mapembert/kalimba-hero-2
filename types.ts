@@ -41,6 +41,7 @@ export interface AppSettings {
   micSilenceThreshold: number;
   micCorrelationThreshold: number;
   inputMode: 'Microphone' | 'Touch';
+  gameWidthPercent: number; // 60 to 100, percentage of screen width
 }
 
 export enum HitRating {

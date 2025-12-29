@@ -22,6 +22,20 @@ Live Demo: https://mapembert.github.io/kalimba-hero-2/
 
 ## Changelog
 
+### December 29, 2025 - Game Width Adjustment Feature
+
+**New Feature:**
+- Added in-game width adjustment controls (+/- buttons)
+- Adjustable range: 60% to 100% of screen width in 5% increments
+- Controls positioned at top-center for easy access without blocking gameplay
+- Width preference is saved to localStorage and persists across sessions
+- Game canvas automatically centers when width is less than 100%
+- Perfect for aligning the game with your physical Kalimba in landscape mode
+
+**UI Improvements:**
+- Removed unnecessary instruction message from bottom-left corner
+- Cleaner gameplay area without distractions
+
 ### December 24, 2025 - Production Deployment
 
 **Fixed Critical Rendering Issues:**

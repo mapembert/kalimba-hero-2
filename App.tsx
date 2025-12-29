@@ -279,8 +279,9 @@ const App: React.FC = () => {
       const saved = localStorage.getItem('kalimba_settings');
       if (saved) {
           const parsed = JSON.parse(saved);
-          // Backwards compatibility for new inputMode field
+          // Backwards compatibility for new fields
           if (!parsed.inputMode) parsed.inputMode = 'Microphone';
+          if (!parsed.gameWidthPercent) parsed.gameWidthPercent = 100;
           return parsed;
       }
       return {
@@ -289,7 +290,8 @@ const App: React.FC = () => {
           micGain: 5.0,
           micSilenceThreshold: 0.005,
           micCorrelationThreshold: 0.8,
-          inputMode: 'Microphone'
+          inputMode: 'Microphone',
+          gameWidthPercent: 100
       };
   });
 
@@ -512,7 +514,7 @@ const App: React.FC = () => {
 
   // Game View
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
       {activeSong && (
         <GameContainer 
           song={activeSong} 
@@ -528,6 +530,11 @@ const App: React.FC = () => {
         combo={gameState.combo}
         lastRating={lastRating}
         onExit={exitGame}
+        gameWidthPercent={appSettings.gameWidthPercent}
+        onWidthChange={(percent) => {
+          const newSettings = { ...appSettings, gameWidthPercent: percent };
+          handleSaveSettings(newSettings);
+        }}
       />
     </div>
   );

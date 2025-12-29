@@ -23,13 +23,17 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
     const initGame = setTimeout(() => {
       if (!containerRef.current) return;
       
-      const rect = containerRef.current.getBoundingClientRect();
+      const parentRect = containerRef.current.parentElement?.getBoundingClientRect();
+      if (!parentRect) return;
+      
+      const gameWidth = (parentRect.width * settings.gameWidthPercent) / 100;
+      const gameHeight = parentRect.height;
 
       const config: Phaser.Types.Core.GameConfig = {
         type: Phaser.CANVAS, // Use Canvas to avoid WebGL framebuffer issues
         parent: containerRef.current,
-        width: rect.width || window.innerWidth,
-        height: rect.height || window.innerHeight,
+        width: gameWidth,
+        height: gameHeight,
         backgroundColor: '#111827',
         render: {
           transparent: false,
@@ -72,8 +76,12 @@ const GameContainer: React.FC<GameContainerProps> = ({ song, speed, settings, on
   return (
     <div 
       ref={containerRef} 
-      className="absolute inset-0 z-0"
-      style={{ width: '100%', height: '100%', overflow: 'hidden' }}
+      className="z-0"
+      style={{ 
+        width: `${settings.gameWidthPercent}%`, 
+        height: '100%',
+        margin: '0 auto'
+      }}
     />
   );
 };
